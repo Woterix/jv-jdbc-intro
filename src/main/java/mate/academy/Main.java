@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import mate.academy.dao.BookDao;
 import mate.academy.lib.lidimpl.Injector;
 import mate.academy.models.Book;
-import mate.academy.service.serviceimpl.BookServiceImpl;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,17 +12,18 @@ public class Main {
         Book book = new Book();
         book.setTitle("Dream");
         book.setPrice(BigDecimal.valueOf(10.99));
-        BookServiceImpl bookService = new BookServiceImpl(bookDao);
-        bookService.create(book);
+        Book savedBook1 = bookDao.create(book);
         Book book2 = new Book();
         book2.setTitle("Night");
         book2.setPrice(BigDecimal.valueOf(15.99));
-        bookService.create(book2);
-        System.out.println(bookService.findAll());
-        System.out.println(bookService.findById(2L));
-        book.setPrice(BigDecimal.valueOf(30));
-        bookService.update(book);
-        bookService.delete(2L);
-        System.out.println(bookService.findAll());
+        Book savedBook2 = bookDao.create(book2);
+        System.out.println("All books: " + bookDao.findAll());
+        System.out.println("Find by id: " + bookDao.findById(savedBook2.getId()).get());
+        savedBook1.setPrice(BigDecimal.valueOf(30));
+        bookDao.update(savedBook1);
+        bookDao.deleteById(savedBook2.getId());
+        System.out.println("All books after delete: " + bookDao.findAll());
     }
 }
+
+
